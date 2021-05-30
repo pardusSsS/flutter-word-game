@@ -14,21 +14,17 @@ class navigate extends StatelessWidget {
     return GetMaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
-        // ... app-specific localization delegate[s] here
         SfGlobalLocalizations.delegate
       ],
-      //ignore: always_specify_types
       supportedLocales: const [
         Locale('en'),
         Locale('tr'),
-        // ... other locales the app supports
       ],
       locale: const Locale('tr'),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       getPages: [
         GetPage(name: "/", page: () => loginPage_Body()),
-        //GetPage(name: "/", page: () => maingamePage()),
         GetPage(name: "/mainPage", page: () => maingamePage())
       ],
     );

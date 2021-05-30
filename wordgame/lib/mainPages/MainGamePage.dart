@@ -98,6 +98,7 @@ class Controller extends GetxController {
 
   selectControl(int num, BuildContext context) {
     if (ranHead == num) {
+      timerr.cancel();
       return showDialog(
           barrierDismissible: false,
           context: context,
@@ -133,7 +134,6 @@ class Controller extends GetxController {
                         ),
                         (route) => false,
                       );
-
                     },
                   ),
                   IconButton(
@@ -149,15 +149,8 @@ class Controller extends GetxController {
                       deleteItem();
                       randomOther();
                       RandomHead();
-
                       _saveScore();
-
                       _getScore();
-
-
-                      //      Allbody(context,Get.put(Controller()));
-                      // saveHighScore(score);
-                      //scoreSave(0);
                       Navigator.pop(context);
                       time_func();
                     },
@@ -167,6 +160,7 @@ class Controller extends GetxController {
             );
           });
     } else {
+      timerr.cancel();
       return showDialog(
           barrierDismissible: false,
           context: context,
@@ -195,7 +189,7 @@ class Controller extends GetxController {
                       // time += 12;
                       // time_func();
                       timerr.cancel();
-                      time -=time.toInt();
+                      time -= time.toInt();
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
@@ -231,21 +225,13 @@ class Controller extends GetxController {
     var tempScore;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tempScore = prefs.getInt("score");
-    score = tempScore;
+    score.value = tempScore;
   }
 
   Future _resetScore() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("score", 0);
   }
-
-  // Future _saveHighScore(int nowScore) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   if (nowScore > score.toInt()) {
-  //     await prefs.setInt("highScore", score.toInt());
-  //     print("high1");print(score);
-  //   }
-  // }
 
   time_func() {
     Timer.periodic(Duration(seconds: 1), (timer) {
@@ -264,14 +250,12 @@ class Controller extends GetxController {
                 icon: Icon(Icons.home_filled, color: Colors.red),
                 iconSize: 50,
                 onPressed: () {
-                  //  _saveHighScore(score.toInt());
-                  time -=time.toInt();
-                  time+=12;
+                  time -= time.toInt();
+                  time += 12;
 
                   _resetScore();
-                  //Get.toNamed("/");
+
                   Get.offAll(loginPage_Body());
-                  // Get.back();
                 },
               ),
             ]);
@@ -309,42 +293,36 @@ class maingamePage extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25)
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
             child: IconButton(
                 onPressed: () {
                   c.timerr.cancel();
                   c.time -= c.time.toInt();
-                  c.time +=12;
+                  c.time += 12;
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) => loginPage_Body(),
                     ),
-                        (route) => false,
+                    (route) => false,
                   );
-                } ,
-                icon: Icon(
-                  Icons.home_filled,
-                  size: 50,
-                  color:Colors.white
-                )),
+
+                  //  Get.offAndToNamed("/");
+                },
+                icon: Icon(Icons.home_filled, size: 50, color: Colors.white)),
           ),
           Padding(
             padding: EdgeInsets.all(25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Container(
                     width: displayWidth(context) * 0.3,
                     height: displayHeight(context) * 0.05,
                     padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
                         color: container5,
-                      borderRadius: BorderRadius.circular(10)
-                    ),
+                        borderRadius: BorderRadius.circular(10)),
                     child: Center(
                       child: Obx(() => Text(
                             "TIME: ${c.time}",
@@ -358,9 +336,8 @@ class maingamePage extends StatelessWidget {
                   width: displayWidth(context) * 0.3,
                   height: displayHeight(context) * 0.05,
                   decoration: BoxDecoration(
-                    color: container6,
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+                      color: container6,
+                      borderRadius: BorderRadius.circular(10)),
                   child: Center(
                     child: Obx(() => Text(
                           "SCORE: ${c.score}",
